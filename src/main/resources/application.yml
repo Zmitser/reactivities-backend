@@ -2,3 +2,5 @@ mongock:
     change-logs-scan-package:
         - by.zmitser.webapp.reactivities.config
     runner-type: applicationrunner
+reactor:
+    core:

@@ -27,6 +27,10 @@ dependencies {
     implementation("com.github.cloudyrock.mongock:mongock-spring-v5:4.1.17")
     implementation("com.github.cloudyrock.mongock:mongodb-springdata-v3-driver:4.1.17")
     implementation("org.mongodb:mongodb-driver-sync:4.1.1")
+    implementation("org.axonframework.extensions.reactor:axon-reactor-spring-boot-starter:4.4.2")
+    implementation("org.axonframework:axon-spring-boot-starter:4.4.2"){
+        exclude(group = "org.axonframework", module = "axon-server-connector")
+    }
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }

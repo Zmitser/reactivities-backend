@@ -1,68 +1,35 @@
-import React, {useEffect, useState} from 'react';
-import axios, {AxiosResponse} from 'axios'
+import React from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import {Container} from "semantic-ui-react";
-import {IActivity} from "../models/activity";
-import {NavBar} from "../../features/nav/NavBar";
-import {ActivityDashboard} from "../../features/activities/dashboard/ActivityDashboard";
+import NavBar from "../../features/nav/NavBar";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
+import {observer} from "mobx-react-lite";
+import {Route, RouteComponentProps, withRouter} from "react-router-dom";
+import {Home} from "../../features/home/Home";
+import ActivityForm from "../../features/activities/form/ActivityForm";
+import ActivityDetails from "../../features/activities/details/ActivityDetails";
 
 
-function App() {
-
-    const [activities, setActivities] = useState<IActivity[]>([])
-    const [selectedActivity, setSelectedActivity] = useState<IActivity | null | undefined>(null)
-    const [editMode, setEditMode] = useState<boolean>(false)
-
-    const handleSelectActivity = (id: string | null | undefined) => {
-        let find: IActivity | undefined = activities.find((activity: IActivity) => activity.id === id);
-        setSelectedActivity(find)
-        setEditMode(false)
-    }
-
-    const handleOpenActivity = () => {
-        setSelectedActivity(null)
-        setEditMode(true)
-    }
-
-    const handleCreateActivity = (activity: IActivity) => {
-        setActivities([...activities, activity])
-        setSelectedActivity(activity)
-        setEditMode(false)
-    }
-    const handleEditActivity = (activity: IActivity) => {
-        setActivities([...activities.filter((a: IActivity) => a.id !== activity.id), activity])
-        setSelectedActivity(activity)
-        setEditMode(false)
-    }
-
-    const handleDelete = (id: string | null | undefined) => {
-        setActivities([...activities.filter((a: IActivity) => a.id !== id)])
-    }
-
-
-    useEffect(() => {
-        axios.get<IActivity[]>('/api/v1/activities')
-            .then((response: AxiosResponse<IActivity[]>) => setActivities(response.data))
-    }, [])
+function App({location}: RouteComponentProps) {
 
     return (
         <>
-            <NavBar openActivity={handleOpenActivity}/>
-            <Container style={{marginTop: '7em'}}>
-                <ActivityDashboard selectedActivity={selectedActivity!}
-                                   selectActivity={handleSelectActivity}
-                                   editMode={editMode}
-                                   setEditMode={setEditMode}
-                                   activities={activities}
-                                   createActivity={handleCreateActivity}
-                                   editActivity={handleEditActivity}
-                                   deleteActivity={handleDelete}
-                                   setSelectedActivity={setSelectedActivity}/>
-            </Container>
+            <Route exact path='/' component={Home}/>
+            <Route path={'/(.+)'} render={() => (
+                <>
+                    <NavBar/>
+                    <Container style={{marginTop: '7em'}}>
+
+                        <Route exact path='/activities' component={ActivityDashboard}/>
+                        <Route path='/activities/:id' component={ActivityDetails}/>
+                        <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm}/>
+                    </Container>
+                </>
+            )}/>
         </>
     );
 
 }
 
 
-export default App;
+export default withRouter(observer(App));

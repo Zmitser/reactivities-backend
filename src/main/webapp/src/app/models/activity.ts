@@ -1,5 +1,5 @@
 export interface IActivity {
-    id?: string | null;
+    id?: string;
     title: string;
     description: string;
     category: string;

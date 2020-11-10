@@ -20,8 +20,8 @@ class ActivityService(val repository: ActivityRepository) {
     @CommandHandler
     fun create(createActivityCommand: CreateActivityCommand) {
         createActivityCommand.toMono()
-                .map { (title, description, date, category, city, venue) ->
-                    Activity(title, description, date, category, city, venue)
+                .map { (id,title, description, date, category, city, venue) ->
+                    Activity(id, title, description, date, category, city, venue)
                 }.flatMap {
                     repository.save(it)
                 }.switchIfEmpty(Mono.error(Exception("Cannot create activity")))

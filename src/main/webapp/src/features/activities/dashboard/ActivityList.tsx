@@ -2,19 +2,19 @@
 import * as React from 'react';
 import {Button, Item, Label, Segment} from 'semantic-ui-react';
 import {IActivity} from "../../../app/models/activity";
+import ActivityStore from "../../../app/stores/activityStore";
+import {useContext} from "react";
+import {observer} from "mobx-react-lite";
+import {Link} from "react-router-dom";
 
-type Props = {
-    activities: IActivity[]
-    selectActivity: (id: string | null | undefined) => void
-    deleteActivity: (id: string | null | undefined) => void
-};
 
-export function ActivityList({activities, selectActivity, deleteActivity}: Props) {
+const ActivityList = () => {
+    const {activitiesByDate, deleteActivity, submitting} = useContext(ActivityStore)
     return (
         <Segment clearing>
             <Item.Group divided>
                 {
-                    activities.map((activity: IActivity) => (
+                    activitiesByDate.map((activity: IActivity) => (
                         <Item key={activity.id}>
                             <Item.Content>
                                 <Item.Header as='a'>{activity.title}</Item.Header>
@@ -24,13 +24,16 @@ export function ActivityList({activities, selectActivity, deleteActivity}: Props
                                     <div>{activity.city}, {activity.venue}</div>
                                 </Item.Description>
                                 <Item.Extra>
-                                    <Button onClick={() => selectActivity(activity.id)}
+                                    <Button as={Link}
+                                            to={`/activities/${activity.id}`}
                                             floated='right'
                                             content='View'
                                             color='blue'/>
                                     <Button onClick={() => deleteActivity(activity.id)}
                                             floated='right'
                                             content='Delete'
+                                            name={activity.id}
+                                            loading={submitting}
                                             color='red'/>
                                     <Label basic content={activity.category}/>
                                 </Item.Extra>
@@ -41,3 +44,4 @@ export function ActivityList({activities, selectActivity, deleteActivity}: Props
         </Segment>
     );
 };
+export default observer(ActivityList)

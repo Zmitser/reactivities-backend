@@ -1,27 +1,30 @@
 // @flow
 import * as React from 'react';
 import {Button, Container, Menu} from "semantic-ui-react";
+import {observer} from "mobx-react-lite";
+import {NavLink} from "react-router-dom";
 
-type Props = {
-    openActivity: () => void
-};
 
-export function NavBar({openActivity}: Props) {
+const NavBar = () => {
     return (
         <Menu fixed='top' inverted>
             <Container>
-                <Menu.Item header>
+                <Menu.Item header as={NavLink} to='/' exact>
                     <img src='/assets/images/logo.png' alt='Logo'
                          style={{marginRight: '10px'}}/>
                     Reactivities
                 </Menu.Item>
                 <Menu.Item
                     name='Activities'
+                    as={NavLink}
+                    to='/activities'
                 />
                 <Menu.Item>
-                    <Button onClick={openActivity} positive content='Create Activity'/>
+                    <Button as={NavLink} to='/createActivity' positive content='Create Activity'/>
                 </Menu.Item>
             </Container>
         </Menu>
     );
 }
+
+export default observer(NavBar)

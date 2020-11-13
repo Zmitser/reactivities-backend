@@ -22,6 +22,7 @@ class DatabaseMigration {
     fun addActivities(mongockTemplate: MongockTemplate) {
         mongockTemplate.save(Activity("Past Activity 1", "Activity 2 months ago", now().minusMonths(2), "drinks", "London", "Pub"))
         mongockTemplate.save(Activity("Past Activity 2", "Activity 1 months ago", now().minusMonths(1), "culture", "Paris", "Louvre"))
+        mongockTemplate.save(Activity("Past Activity 2", "Another Activity 1 months ago", now().minusMonths(1), "culture", "Minsk", "Theatre"))
         mongockTemplate.save(Activity("Future Activity 1", "Activity 1 month in future", now().plusMonths(1), "culture", "London", "Natural History Museum"))
         mongockTemplate.save(Activity("Future Activity 2", "Activity 2 month in future", now().plusMonths(2), "music", "London", "02 Arena"))
         mongockTemplate.save(Activity("Future Activity 3", "Activity 3 month in future", now().plusMonths(3), "drinks", "London", "Another Pub"))

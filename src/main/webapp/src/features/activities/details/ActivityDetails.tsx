@@ -1,46 +1,42 @@
 // @flow
 import * as React from 'react';
-import {Button, ButtonGroup, Card, Image} from "semantic-ui-react";
+import { Grid, GridColumn} from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
 import {useContext, useEffect} from "react";
 import {observer} from "mobx-react-lite";
-import {Link, RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps} from 'react-router-dom';
 import {Loading} from "../../../app/layout/Loading";
+import ActivityDetailedHeader from "./ActivityDetailedHeader";
+import {ActivityDetailedInfo} from "./ActivityDetailedInfo";
+import {ActivityDetailedChat} from "./ActivityDetailedChat";
+import {ActivityDetailedSidebar} from "./ActivityDetailedSidebar";
 
 type DetailParams = {
     id: string
 }
 
-const ActivityDetails = ({match, history}: RouteComponentProps<DetailParams>) => {
+const ActivityDetails = ({match}: RouteComponentProps<DetailParams>) => {
     const {selectedActivity, loadActivity, loadingInitial} = useContext(ActivityStore)
 
     useEffect(() => {
         loadActivity(match.params.id)
 
-    }, [loadActivity, match.params.id, selectedActivity])
+    }, [loadActivity, match.params.id])
 
     if (loadingInitial || !selectedActivity) {
         return <Loading content='Loading activity...'/>
     }
     return (
-        <Card fluid>
-            <Image src={`/assets/images/categories/${selectedActivity?.category}.jpg`} wrapped ui={false}/>
-            <Card.Content>
-                <Card.Header>{selectedActivity?.title}</Card.Header>
-                <Card.Meta>
-                    <span>{selectedActivity?.date}</span>
-                </Card.Meta>
-                <Card.Description>
-                    {selectedActivity?.description}
-                </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <ButtonGroup widths={2}>
-                    <Button as={Link} to={`/manage/${selectedActivity?.id}`} basic color='blue' content='Edit'/>
-                    <Button onClick={() => history.push('/activities')} basic color='yellow' content='cancel'/>
-                </ButtonGroup>
-            </Card.Content>
-        </Card>
+        <Grid>
+            <GridColumn width={10}>
+                <ActivityDetailedHeader activity={selectedActivity}/>
+                <ActivityDetailedInfo activity={selectedActivity}/>
+                <ActivityDetailedChat/>
+            </GridColumn>
+            <GridColumn width={6}>
+                <ActivityDetailedSidebar/>
+            </GridColumn>
+        </Grid>
     );
 };
 export default observer(ActivityDetails)

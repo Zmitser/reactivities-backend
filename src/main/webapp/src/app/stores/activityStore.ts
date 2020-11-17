@@ -12,7 +12,9 @@ class ActivityStore {
     @observable submitting = false
 
     @computed get activitiesByDate() {
-        return this.groupActivitiesByDate([...this.activityRegistry.values()])
+        const groupActivitiesByDate1 = this.groupActivitiesByDate([...this.activityRegistry.values()]);
+        console.log(groupActivitiesByDate1)
+        return groupActivitiesByDate1
     }
 
     groupActivitiesByDate(activities: IActivity[]) {

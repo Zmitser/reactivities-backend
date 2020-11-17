@@ -5,8 +5,13 @@ import by.zmitser.webapp.reactivities.repository.ActivityRepository
 import by.zmitser.webapp.reactivities.web.controller.activity.command.CreateActivityCommand
 import by.zmitser.webapp.reactivities.web.controller.activity.command.DeleteActivityCommand
 import by.zmitser.webapp.reactivities.web.controller.activity.command.UpdateActivityCommand
+import by.zmitser.webapp.reactivities.web.controller.activity.exception.RestException
 import org.axonframework.commandhandling.CommandHandler
+import org.axonframework.messaging.interceptors.ExceptionHandler
 import org.springframework.stereotype.Service
+import org.zalando.problem.Status
+import org.zalando.problem.Status.*
+import reactor.core.Exceptions
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toMono
 
@@ -15,12 +20,12 @@ class ActivityService(val repository: ActivityRepository) {
 
     fun findAll() = repository.findAll()
 
-    fun findOne(id: String) = repository.findById(id).switchIfEmpty(Mono.error(Exception("Activity not found")))
+    fun findOne(id: String) = repository.findById(id).switchIfEmpty(Mono.error(RestException(NOT_FOUND, NOT_FOUND.name, "Activity with id $id not found")))
 
     @CommandHandler
     fun create(createActivityCommand: CreateActivityCommand) {
         createActivityCommand.toMono()
-                .map { (id,title, description, date, category, city, venue) ->
+                .map { (id, title, description, date, category, city, venue) ->
                     Activity(id, title, description, date, category, city, venue)
                 }.flatMap {
                     repository.save(it)
@@ -50,7 +55,7 @@ class ActivityService(val repository: ActivityRepository) {
     @CommandHandler
     fun delete(deleteActivityCommand: DeleteActivityCommand) {
         repository.deleteById(deleteActivityCommand.id)
-                .switchIfEmpty(Mono.error(Exception("Activity not found")))
+                .switchIfEmpty(Mono.error(RestException(NOT_FOUND, NOT_FOUND.name, "Activity with id ${deleteActivityCommand.id} not found")))
                 .subscribe()
     }
 }

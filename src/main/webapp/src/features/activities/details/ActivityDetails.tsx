@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { Grid, GridColumn} from "semantic-ui-react";
+import {Grid, GridColumn} from "semantic-ui-react";
 import ActivityStore from "../../../app/stores/activityStore";
 import {useContext, useEffect} from "react";
 import {observer} from "mobx-react-lite";
@@ -15,17 +15,18 @@ type DetailParams = {
     id: string
 }
 
-const ActivityDetails = ({match}: RouteComponentProps<DetailParams>) => {
+const ActivityDetails = ({match, history}: RouteComponentProps<DetailParams>) => {
     const {selectedActivity, loadActivity, loadingInitial} = useContext(ActivityStore)
 
     useEffect(() => {
         loadActivity(match.params.id)
 
-    }, [loadActivity, match.params.id])
+    }, [loadActivity, match.params.id, history])
 
-    if (loadingInitial || !selectedActivity) {
+    if (loadingInitial) {
         return <Loading content='Loading activity...'/>
     }
+
     return (
         <Grid>
             <GridColumn width={10}>

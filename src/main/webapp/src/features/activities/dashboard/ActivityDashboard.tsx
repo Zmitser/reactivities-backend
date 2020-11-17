@@ -10,6 +10,7 @@ import ActivityStore from "../../../app/stores/activityStore";
 
 const ActivityDashboard = () => {
     const activityStore = useContext(ActivityStore);
+
     useEffect(() => {
         activityStore.loadActivities()
     }, [activityStore])

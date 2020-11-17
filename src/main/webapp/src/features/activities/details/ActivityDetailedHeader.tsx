@@ -5,7 +5,7 @@ import {IActivity} from "../../../app/models/activity";
 import {observer} from "mobx-react-lite";
 
 type Props = {
-    activity: IActivity
+    activity?: IActivity | null | undefined
 };
 
 const activityImageStyle = {
@@ -25,15 +25,15 @@ const ActivityDetailedHeader = ({activity}: Props) => {
     return (
         <SegmentGroup>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/images/categories/${activity.category}.jpg`} fluid style={activityImageStyle}/>
+                <Image src={`/assets/images/categories/${activity?.category}.jpg`} fluid style={activityImageStyle}/>
                 <Segment basic style={activityImageTextStyle}>
                     <ItemGroup>
                         <Item>
                             <ItemContent>
                                 <Header size='huge'
-                                        content={activity.title}
+                                        content={activity?.title}
                                         style={{color: 'white'}}/>
-                                <p>{activity.date}</p>
+                                <p>{activity?.date}</p>
                                 <p>Hosted by <strong>Swagger.json</strong></p>
                             </ItemContent>
                         </Item>

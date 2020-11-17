@@ -1,5 +1,21 @@
 package by.zmitser.webapp.reactivities.web.controller.activity.command
 
 import java.time.LocalDateTime
+import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotNull
 
-data class CreateActivityCommand(val id:String, val title: String, val description: String, val date: LocalDateTime, val category: String, val city: String, val venue: String)
+data class CreateActivityCommand(
+        val id: String?,
+        @field:NotBlank
+        val title: String?,
+        @field:NotBlank
+        val description: String?,
+        @field:NotNull
+        val date: LocalDateTime?,
+        @field:NotBlank
+        val category: String?,
+        @field:NotBlank
+        val city: String?,
+        @field:NotBlank
+        val venue: String?
+)

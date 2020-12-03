@@ -2,9 +2,10 @@
 import * as React from 'react';
 import {Grid, Icon, Segment} from 'semantic-ui-react';
 import {IActivity} from "../../../app/models/activity";
+import {format} from 'date-fns'
 
 type Props = {
-    activity?: IActivity | null | undefined
+    activity: IActivity
 };
 
 export function ActivityDetailedInfo({activity}: Props) {
@@ -26,7 +27,7 @@ export function ActivityDetailedInfo({activity}: Props) {
                         <Icon name='calendar' size='large' color='teal'/>
                     </Grid.Column>
                     <Grid.Column width={15}>
-                        <span>{activity?.date}</span>
+                        <span>{format(activity.date, 'eeee do MMMM')} at {format(activity.date, 'h:mm a')}</span>
                     </Grid.Column>
                 </Grid>
             </Segment>

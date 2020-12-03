@@ -6,3 +6,5 @@ logging:
     level:
         root: DEBUG
         by.zmitser.webapp.reactivities: DEBUG
+server:
+    port: 8081

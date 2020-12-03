@@ -8,17 +8,18 @@ axios.defaults.baseURL = '/api/v1'
 axios.interceptors.response.use(undefined, error => {
     const status = error.response.status;
 
-    if ((error.message === 'Network error' && !error.response) || window.navigator.onLine){
+    if ((error.message === 'Network error' && !error.response) || window.navigator.onLine) {
         toast.error('Network error - make sure API is running!')
     }
 
-    if (status === 404){
+    if (status === 404) {
         history.push('/notfound')
     }
 
     if (status === 500) {
         toast.error('Server Error - check the terminal for more info!')
     }
+    throw error
 
 })
 

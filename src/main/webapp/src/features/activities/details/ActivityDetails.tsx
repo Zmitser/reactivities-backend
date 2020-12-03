@@ -16,14 +16,14 @@ type DetailParams = {
 }
 
 const ActivityDetails = ({match, history}: RouteComponentProps<DetailParams>) => {
-    const {selectedActivity, loadActivity, loadingInitial} = useContext(ActivityStore)
+    const {selectedActivity, loadActivity} = useContext(ActivityStore)
 
     useEffect(() => {
         loadActivity(match.params.id)
 
     }, [loadActivity, match.params.id, history])
 
-    if (loadingInitial) {
+    if (!selectedActivity) {
         return <Loading content='Loading activity...'/>
     }
 

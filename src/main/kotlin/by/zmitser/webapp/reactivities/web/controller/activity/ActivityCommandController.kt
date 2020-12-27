@@ -17,7 +17,7 @@ import javax.validation.Valid
 class ActivityCommandController(private val commandGateway: ReactorCommandGateway) {
 
     @PostMapping
-    fun create(@Valid @RequestBody createActivityCommand: CreateActivityCommand): Mono<Any> {
+    fun create(@Valid @RequestBody createActivityCommand: CreateActivityCommand): Mono<Void> {
         return commandGateway.send(createActivityCommand)
     }
 

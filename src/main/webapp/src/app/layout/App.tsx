@@ -10,6 +10,7 @@ import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import NotFound from "./NotFound";
 import {ToastContainer} from "react-toastify";
+import {LoginForm} from "../../features/user/LoginForm";
 
 
 function App({location}: RouteComponentProps) {
@@ -25,7 +26,9 @@ function App({location}: RouteComponentProps) {
                         <Switch>
                             <Route exact path='/activities' component={ActivityDashboard}/>
                             <Route path='/activities/:id' component={ActivityDetails}/>
-                            <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm}/>
+                            <Route key={location.key} path={['/createActivity', '/manage/:id']}
+                                   component={ActivityForm}/>
+                            <Route path='/login' component={LoginForm}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </Container>

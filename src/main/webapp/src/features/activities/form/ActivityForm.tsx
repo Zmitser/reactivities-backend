@@ -3,7 +3,6 @@ import * as React from 'react';
 import {Button, Form, FormGroup, Grid, GridColumn, Segment} from "semantic-ui-react";
 import {ActivityFormValues, IActivity} from "../../../app/models/activity";
 import {useEffect, useState} from "react";
-import ActivityStore from "../../../app/stores/activityStore";
 import {useContext} from "react";
 import {observer} from "mobx-react-lite";
 import {RouteComponentProps, useHistory} from "react-router-dom";
@@ -15,6 +14,7 @@ import {category} from "../../../app/common/options/categoryOptions";
 import {DateInput} from "../../../app/common/form/DateInput";
 import {combineDateTime} from "../../../app/common/util/util";
 import {combineValidators, composeValidators, hasLengthGreaterThan, isRequired} from "revalidate"
+import {RootStoreContext} from "../../../app/stores/rootStore";
 
 
 const validate = combineValidators({
@@ -38,8 +38,8 @@ type DetailParams = {
 const ActivityForm = ({match}: RouteComponentProps<DetailParams>) => {
 
     const {push} = useHistory()
-
-    const {submitting, loadActivity, createActivity, editActivity} = useContext(ActivityStore)
+    const {activityStore} = useContext(RootStoreContext)
+    const {submitting, loadActivity, createActivity, editActivity} = activityStore
 
     const [selectedActivity, setSelectedActivity] = useState(new ActivityFormValues())
 

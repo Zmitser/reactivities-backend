@@ -1,6 +1,8 @@
 package by.zmitser.webapp.reactivities.config
 
 import by.zmitser.webapp.reactivities.domain.Activity
+import by.zmitser.webapp.reactivities.domain.Authority
+import by.zmitser.webapp.reactivities.domain.User
 import by.zmitser.webapp.reactivities.domain.Value
 import com.github.cloudyrock.mongock.ChangeLog
 import com.github.cloudyrock.mongock.ChangeSet
@@ -31,5 +33,16 @@ class DatabaseMigration {
         mongockTemplate.save(Activity("Future Activity 6", "Activity 6 month in future", now().plusMonths(6), "music", "London", "Roundhouse Camden"))
         mongockTemplate.save(Activity("Future Activity 7", "Activity 7 month in future", now().plusMonths(7), "travel", "London", "Somewhere on the Thames"))
         mongockTemplate.save(Activity("Future Activity 8", "Activity 8 month in future", now().plusMonths(8), "film", "London", "Cinema"))
+    }
+
+    @ChangeSet(order = "003", id = "03-addAuthorities", author = "dbarysavets")
+    fun addAuthorities(mongockTemplate: MongockTemplate) {
+        mongockTemplate.save(Authority("ROLE_USER"))
+    }
+
+
+    @ChangeSet(order = "004", id = "04-addUsers", author = "dbarysavets")
+    fun addUsers(mongockTemplate: MongockTemplate) {
+        mongockTemplate.save(User("5fd103838f002b64dc5bd378", "zmitser", "\$2y\$12\$z4rxlDyzeYkHk5Ty5Vge5.F4nQBx2.0cZtB7hw8Anv3Huq6FdXi1e", "", "1@2.by", "Zmitser", mutableSetOf(Authority("ROLE_USER"))))
     }
 }

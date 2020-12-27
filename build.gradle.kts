@@ -20,6 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -31,6 +32,9 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-sync:4.1.1")
     implementation("org.axonframework.extensions.reactor:axon-reactor-spring-boot-starter:4.4.2")
     implementation("org.zalando:problem-spring-webflux:0.26.2")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-impl:0.11.2")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.11.2")
 
     implementation("org.axonframework:axon-spring-boot-starter:4.4.2"){
         exclude(group = "org.axonframework", module = "axon-server-connector")

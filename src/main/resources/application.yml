@@ -8,3 +8,8 @@ logging:
         by.zmitser.webapp.reactivities: DEBUG
 server:
     port: 8081
+security:
+    authentication:
+        jwt:
+            base64-secret: GeHpXda2tX6xNawOZINsbLbJl/AWNK9YyDQWUUm+o5yvFbMp1c736EoHAq+88x4/qsncjRsLAMHnKWGYdxtFhA==
+            expiration: 604800000

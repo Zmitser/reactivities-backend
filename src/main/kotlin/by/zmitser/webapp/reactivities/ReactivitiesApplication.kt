@@ -1,19 +1,26 @@
 package by.zmitser.webapp.reactivities
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.cloudyrock.spring.v5.EnableMongock
-import org.axonframework.commandhandling.CommandBus
-import org.axonframework.commandhandling.SimpleCommandBus
-import org.axonframework.eventhandling.EventBus
-import org.axonframework.eventhandling.SimpleEventBus
-import org.axonframework.queryhandling.QueryBus
-import org.axonframework.queryhandling.SimpleQueryBus
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.core.annotation.Order
+import org.springframework.web.server.WebExceptionHandler
+import org.zalando.problem.spring.webflux.advice.ProblemExceptionHandler
+import org.zalando.problem.spring.webflux.advice.ProblemHandling
+
 
 @SpringBootApplication
 @EnableMongock
-class ReactivitiesApplication
+class ReactivitiesApplication {
+
+    @Bean
+    @Order(-2) // The handler must have precedence over WebFluxResponseStatusExceptionHandler and Spring Boot's ErrorWebExceptionHandler
+    fun problemExceptionHandler(mapper: ObjectMapper, problemHandling: ProblemHandling): WebExceptionHandler? {
+        return ProblemExceptionHandler(mapper, problemHandling)
+    }
+}
 
 fun main(args: Array<String>) {
     runApplication<ReactivitiesApplication>(*args)

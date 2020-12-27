@@ -1,13 +1,15 @@
 import {action, computed, configure, makeObservable, observable} from "mobx";
-import {createContext} from "react";
 import {IActivity} from "../models/activity";
 import agent from "../../api/agent";
 import {history} from '../../index'
+import {RootStore} from "./rootStore";
 
 
 configure({enforceActions: "always"})
 
-class ActivityStore {
+export default class ActivityStore {
+    rootStore: RootStore;
+
     @observable activityRegistry = new Map<string | undefined, IActivity>()
     @observable selectedActivity: IActivity | undefined | null = null
     @observable loadingInitial = false
@@ -16,6 +18,7 @@ class ActivityStore {
     @computed get activitiesByDate() {
         return this.groupActivitiesByDate([...this.activityRegistry.values()])
     }
+
 
     groupActivitiesByDate(activities: IActivity[]) {
         const sortedActivities = activities.sort(((a, b) => a.date.getTime() - b.date.getTime()));
@@ -111,9 +114,8 @@ class ActivityStore {
         this.selectedActivity = undefined
     }
 
-    constructor() {
+    constructor(rootStore:RootStore) {
+        this.rootStore = rootStore
         makeObservable(this)
     }
 }
-
-export default createContext(new ActivityStore())

@@ -1,7 +1,6 @@
 // @flow
 import * as React from 'react';
 import {Grid, GridColumn} from "semantic-ui-react";
-import ActivityStore from "../../../app/stores/activityStore";
 import {useContext, useEffect} from "react";
 import {observer} from "mobx-react-lite";
 import {RouteComponentProps} from 'react-router-dom';
@@ -10,13 +9,15 @@ import ActivityDetailedHeader from "./ActivityDetailedHeader";
 import {ActivityDetailedInfo} from "./ActivityDetailedInfo";
 import {ActivityDetailedChat} from "./ActivityDetailedChat";
 import {ActivityDetailedSidebar} from "./ActivityDetailedSidebar";
+import {RootStoreContext} from "../../../app/stores/rootStore";
 
 type DetailParams = {
     id: string
 }
 
 const ActivityDetails = ({match, history}: RouteComponentProps<DetailParams>) => {
-    const {selectedActivity, loadActivity} = useContext(ActivityStore)
+    const {activityStore} = useContext(RootStoreContext)
+    const {selectedActivity, loadActivity} = activityStore
 
     useEffect(() => {
         loadActivity(match.params.id)

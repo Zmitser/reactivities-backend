@@ -2,13 +2,14 @@ import axios, {AxiosResponse} from 'axios'
 import {IActivity} from "../app/models/activity";
 import {history} from "../index";
 import {toast} from "react-toastify";
+import {IUser, IUserFormValues} from "../app/models/user";
 
 
 axios.defaults.baseURL = '/api/v1'
 axios.interceptors.response.use(undefined, error => {
     const status = error.response.status;
 
-    if ((error.message === 'Network error' && !error.response) || window.navigator.onLine) {
+    if (!window.navigator.onLine) {
         toast.error('Network error - make sure API is running!')
     }
 
@@ -19,8 +20,7 @@ axios.interceptors.response.use(undefined, error => {
     if (status === 500) {
         toast.error('Server Error - check the terminal for more info!')
     }
-    throw error
-
+    throw error.response
 })
 
 const responseBody = (response: AxiosResponse) => response.data
@@ -40,6 +40,13 @@ const Activities = {
     delete: (id: string | undefined) => requests.delete(`/activities/${id}`)
 }
 
+const User = {
+    current: (): Promise<IUser> => requests.get('/users/current'),
+    login: (user: IUserFormValues): Promise<IUser> => requests.post('/users/authenticate', user),
+    register: (user: IUserFormValues): Promise<IUser> => requests.post('/users/register', user)
+}
+
 export default {
-    Activities
+    Activities,
+    User
 }

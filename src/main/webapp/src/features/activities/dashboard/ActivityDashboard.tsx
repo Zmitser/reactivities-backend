@@ -5,11 +5,11 @@ import ActivityList from "./ActivityList";
 import {observer} from "mobx-react-lite";
 import {useContext, useEffect} from "react";
 import {Loading} from "../../../app/layout/Loading";
-import ActivityStore from "../../../app/stores/activityStore";
+import {RootStoreContext} from "../../../app/stores/rootStore";
 
 
 const ActivityDashboard = () => {
-    const activityStore = useContext(ActivityStore);
+    const {activityStore} = useContext(RootStoreContext);
 
     useEffect(() => {
         activityStore.loadActivities()

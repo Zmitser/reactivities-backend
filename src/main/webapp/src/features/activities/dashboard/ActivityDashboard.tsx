@@ -9,13 +9,13 @@ import {RootStoreContext} from "../../../app/stores/rootStore";
 
 
 const ActivityDashboard = () => {
-    const {activityStore} = useContext(RootStoreContext);
+    const {loadActivities, loadingInitial} = useContext(RootStoreContext).activityStore;
 
     useEffect(() => {
-        activityStore.loadActivities()
-    }, [activityStore])
+        loadActivities()
+    }, [loadActivities])
 
-    if (activityStore.loadingInitial) return <Loading content='Loading activities...'/>
+    if (loadingInitial) return <Loading content='Loading activities...'/>
     return (
         <Grid>
             <GridColumn width={10}>

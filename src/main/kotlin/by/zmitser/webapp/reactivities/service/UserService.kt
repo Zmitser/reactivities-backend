@@ -4,9 +4,11 @@ import by.zmitser.webapp.reactivities.domain.Authority
 import by.zmitser.webapp.reactivities.domain.User
 import by.zmitser.webapp.reactivities.repository.AuthorityRepository
 import by.zmitser.webapp.reactivities.repository.UserRepository
+import by.zmitser.webapp.reactivities.security.getCurrentUserLogin
 import by.zmitser.webapp.reactivities.web.controller.activity.exception.EmailAlreadyUsedException
 import by.zmitser.webapp.reactivities.web.controller.activity.exception.UsernameAlreadyUsedException
 import by.zmitser.webapp.reactivities.web.controller.user.command.RegisterCommand
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -21,15 +23,15 @@ class UserService(
 ) {
 
     fun register(registerCommand: RegisterCommand): Mono<User> {
-        return userRepository.findOneByLogin(registerCommand.username.toLowerCase())
+        return userRepository.findOneByUsername(registerCommand.username?.toLowerCase())
                 .flatMap { UsernameAlreadyUsedException().toMono<UsernameAlreadyUsedException>() }
                 .then(userRepository.findOneByEmailIgnoreCase(registerCommand.email))
                 .flatMap { EmailAlreadyUsedException().toMono<EmailAlreadyUsedException>() }
                 .publishOn(Schedulers.boundedElastic())
                 .then(Mono.fromCallable {
-                    val (displayName, username, email) = registerCommand
+                    val (username, email) = registerCommand
                     val encodedPassword = passwordEncoder.encode(registerCommand.password)
-                    User(username, encodedPassword, "", email, displayName)
+                    User(username, encodedPassword, "", email)
                 })
                 .flatMap { user ->
                     authorityRepository.findById("ROLE_USER")
@@ -37,4 +39,6 @@ class UserService(
                             .then(userRepository.save(user))
                 }
     }
+
+    fun getCurrentUser():Mono<User> = getCurrentUserLogin().flatMap { userRepository.findOneByUsername(it) }
 }

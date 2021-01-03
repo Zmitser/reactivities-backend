@@ -24,6 +24,6 @@ class DomainUserDetailsService(private val userRepository: UserRepository) : Rea
 
     private fun createSpringSecurityUser(user: User): org.springframework.security.core.userdetails.User? {
         val grantedAuthorities: List<GrantedAuthority> = user.authorities.map { SimpleGrantedAuthority(it.name) }
-        return org.springframework.security.core.userdetails.User(user.login, user.password, grantedAuthorities)
+        return org.springframework.security.core.userdetails.User(user.username, user.password, grantedAuthorities)
     }
 }

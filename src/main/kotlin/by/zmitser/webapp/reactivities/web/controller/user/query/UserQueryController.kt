@@ -1,16 +1,14 @@
 package by.zmitser.webapp.reactivities.web.controller.user.query
 
+import by.zmitser.webapp.reactivities.domain.User
+import by.zmitser.webapp.reactivities.security.getCurrentUserLogin
 import by.zmitser.webapp.reactivities.security.jwt.TokenProvider
-import by.zmitser.webapp.reactivities.web.controller.user.query.LoginQuery
-import com.fasterxml.jackson.annotation.JsonProperty
+import by.zmitser.webapp.reactivities.service.UserService
 import org.springframework.http.HttpHeaders
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 import javax.validation.Valid
 
@@ -18,7 +16,8 @@ import javax.validation.Valid
 @RequestMapping("/api/v1/users")
 class UserQueryController(
     private val authenticationManager: ReactiveAuthenticationManager,
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val userService: UserService
 ) {
 
     @PostMapping("/authenticate")
@@ -33,4 +32,8 @@ class UserQueryController(
                 }
         }
     }
+
+    @GetMapping("/current")
+    fun current(): Mono<User> = userService.getCurrentUser()
+
 }

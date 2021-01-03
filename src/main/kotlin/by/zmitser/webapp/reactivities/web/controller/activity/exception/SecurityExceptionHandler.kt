@@ -6,4 +6,7 @@ import org.zalando.problem.spring.webflux.advice.security.SecurityAdviceTrait
 
 
 @RestControllerAdvice
-class SecurityExceptionHandler : SecurityAdviceTrait, ProblemHandling
+class SecurityExceptionHandler : SecurityAdviceTrait, ProblemHandling {
+    override fun isCausalChainsEnabled(): Boolean = false
+
+}

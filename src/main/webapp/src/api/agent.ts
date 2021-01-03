@@ -6,6 +6,13 @@ import {IUser, IUserFormValues} from "../app/models/user";
 
 
 axios.defaults.baseURL = '/api/v1'
+
+axios.interceptors.request.use((config) => {
+    const token = window.localStorage.getItem('jwt');
+    if (token) config.headers.Authorization = `Bearer ${token}`
+    return config
+})
+
 axios.interceptors.response.use(undefined, error => {
     const status = error.response.status;
 

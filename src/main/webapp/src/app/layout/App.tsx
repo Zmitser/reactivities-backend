@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import 'semantic-ui-css/semantic.min.css'
 import {Container} from "semantic-ui-react";
 import NavBar from "../../features/nav/NavBar";
@@ -11,12 +11,29 @@ import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import NotFound from "./NotFound";
 import {ToastContainer} from "react-toastify";
 import {LoginForm} from "../../features/user/LoginForm";
+import {RootStoreContext} from "../stores/rootStore";
+import {Loading} from "./Loading";
+import ModalContainer from "../modal/ModalContainer";
 
 
 function App({location}: RouteComponentProps) {
 
+    const {commonStore, userStore} = useContext(RootStoreContext);
+    const {setAppLoaded, token} = commonStore;
+    const {getUser} = userStore
+
+    useEffect(() => {
+        if (token) {
+            getUser().finally(() => setAppLoaded())
+        } else {
+            setAppLoaded()
+        }
+    }, [getUser, setAppLoaded, token])
+
+    if (!setAppLoaded) return <Loading content='Loading app...'/>
     return (
         <>
+            <ModalContainer/>
             <ToastContainer position='bottom-right'/>
             <Route exact path='/' component={Home}/>
             <Route path={'/(.+)'} render={() => (

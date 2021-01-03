@@ -15,7 +15,9 @@ class UserCommandController(val userService: UserService) {
 
 
     @PostMapping("/register")
-    fun register(@RequestBody registerCommand: @Valid Mono<RegisterCommand>): Mono<Void> {
+    fun register(@RequestBody @Valid registerCommand: Mono<RegisterCommand>): Mono<Void> {
+//    fun register(@RequestBody @Valid registerCommand: RegisterCommand): Mono<Void> {
        return registerCommand.flatMap { userService.register(it) }.then()
+//       return userService.register(registerCommand).then()
     }
 }

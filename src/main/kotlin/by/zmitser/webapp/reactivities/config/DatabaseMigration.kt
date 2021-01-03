@@ -43,6 +43,6 @@ class DatabaseMigration {
 
     @ChangeSet(order = "004", id = "04-addUsers", author = "dbarysavets")
     fun addUsers(mongockTemplate: MongockTemplate) {
-        mongockTemplate.save(User("5fd103838f002b64dc5bd378", "zmitser", "\$2y\$12\$z4rxlDyzeYkHk5Ty5Vge5.F4nQBx2.0cZtB7hw8Anv3Huq6FdXi1e", "", "1@2.by", "Zmitser", mutableSetOf(Authority("ROLE_USER"))))
+        mongockTemplate.save(User("5fd103838f002b64dc5bd378", "zmitser", "\$2y\$12\$z4rxlDyzeYkHk5Ty5Vge5.F4nQBx2.0cZtB7hw8Anv3Huq6FdXi1e", "", "1@2.by", mutableSetOf(Authority("ROLE_USER"))))
     }
 }
